@@ -10,6 +10,8 @@
 //Ejercicio 5-1:
 //Pedir el ingreso de 5 números. Mostrarlos y calcular la sumatoria de los mismos.
 
+//Entregado con bibliotecas.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "Vector.h"

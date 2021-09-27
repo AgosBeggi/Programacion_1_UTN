@@ -13,29 +13,65 @@
  sus productos los siguientes datos:
  idProducto (numerico)
  descripcion (alfanumérico)
- nacionalidad (numérico, por el momento utilizaremos un define: EEUU - CHINA - OTRO)
+ nacionalidad (numérico, por el momento utilizaremos un define: EEUU - CHINA - OTRO) (por el momento hacer que los numeros, muestren las opciones)
  tipo (numérico, por el momento utilizaremos un define: IPHONE -MAC - IPAD - ACCESORIOS)
  precio (numérico decimal)
+
+ * Para eso hay que crear un nuevo tipo de dato que contenga esa estructura.
+ * Debe incluir un dato que permita guardar un valor para inicializar la lista.
+
  Realizar un programa que permita interactuar con un menú de usuarios con las siguientes
  opciones:
- ALTA Producto: Se ingresan los datos de UN solo producto. Siempre y cuando haya espacio
- disponible en el array.
- BAJA Producto: A partir del ingreso del ID. Si existe el producto desaparece de la lista,
- dejando espacio disponible para un nuevo producto.
- MODIFICACIÓN Producto: A partir del ingreso del ID. Si existe se podrá modificar el precio
- o el tipo.
+
+ * Crear un menu
+
+ ALTA Producto: Se ingresan los datos de UN solo producto.
+
+ * Crear funcion para ingresar sólo un producto.
+
+  Siempre y cuando haya espacio disponible en el array.
+
+  * Crear funcion que verifique si hay un espacio libre.
+
+ BAJA Producto: A partir del ingreso del ID.
+
+ * Crear funcion de busqueda por ID.
+
+ Si existe el producto desaparece de la lista, dejando espacio disponible para un nuevo producto.
+
+ * Crear funcion para eliminar datos de la lista.
+
+ MODIFICACIÓN Producto: A partir del ingreso del ID. Si existe se podrá modificar el precio o el tipo.
+
+ * Crear funcion que permita modificar datos.
+
  LISTADO Productos.
+
+ * Crear funcion que muestre el listado completo.
+
  LISTADO ordenado por precio.
  LISTADO ordenado por descripción.
 
- * https://www.onlinegdb.com/RJ3JSM9rh
+ * Crear funcion que permita ordenar los arrays, y llamar a la funcion anterior.
+
+stricmp() In C: https://www.2braces.com/c-programming/c-stricmp
+//strcmp
+//menor a cero = izquierda es menor derecha
+//cero  = izquierda es igual que derecha
+//mayor a cero = izquierda es mayor derecha
+
+ Trabajo en clase:
+https://www.onlinegdb.com/Zhn330PjV
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <string.h>
 #include "Ingresos.h"
 
 #define TAM 5
+#define EMPTY 0
+#define FULL 1
 
 typedef struct {
 	int idProducto;
@@ -43,31 +79,55 @@ typedef struct {
 	int nacionalidad;
 	int tipo;
 	float precio;
+	int isEmpty;
 } eProducto;
-void CargarProductos(eProducto lista[], int tam);
+
+void CargarProducto(eProducto lista[], int tam);
 void MostrarListadoProductos(eProducto lista[], int tam);
 void OrdenarListaProductosPorId(eProducto lista[], int tam);
 void MostrarProducto(eProducto unProducto);
 eProducto IngresarUnProducto();
+void InicializarListaProducto(eProducto lista[], int tam);
 
 int main(void) {
 	setbuf(stdout, NULL);
+	int opcion;
 
-	eProducto listaProductos[TAM] = { { 1000, "Iphone 12", 1, 1, 1000 }, { 2000,
-			"Macbook Air", 3, 2, 1200 }, { 5000, "MagSafe", 3, 4, 50 }, { 2500,
-			"Ipad 5", 3, 3, 750 }, { 4000, "Ipad 3", 2, 3, 400 } };
+	//eProducto listaProductos[TAM] = {{1000,"Iphone 12",1,1,1000},{2000,"Macbook Air",3,2,1200},{5000,"MagSafe",3,4,50},{2500,"Ipad 5",3,3,750},{4000,"Ipad 3",2,3,400}};
+	eProducto listaProductos[TAM];
+	InicializarListaProducto(listaProductos, TAM);
+	do {
+
+		printf("1. Alta");
+		printf("2. Mostrar");
+		opcion = IngresarEntero("Elija una opcion ewe ");
+		switch (opcion) {
+		case 1:
+			CargarProducto(listaProductos, TAM);
+			break;
+		case 2:
+			MostrarListadoProductos(listaProductos, TAM);
+			break;
+		}
+
+	} while (opcion != 5);
 
 	//CargarProductos(listaProductos, TAM);
-	MostrarListadoProductos(listaProductos, TAM);
-	printf("Lista Ordenada\n");
-	OrdenarListaProductosPorId(listaProductos, TAM);
-	MostrarListadoProductos(listaProductos, TAM);
+	/*
+	 MostrarListadoProductos(listaProductos, TAM);
+	 printf("Lista Ordenada\n");
+	 OrdenarListaProductosPorId(listaProductos, TAM);
+	 MostrarListadoProductos(listaProductos, TAM);
+	 */
 	return EXIT_SUCCESS;
 }
 
-void CargarProductos(eProducto lista[], int tam) {
+void CargarProducto(eProducto lista[], int tam) {
 	for (int i = 0; i < tam; i++) {
-
+		if (lista[i].isEmpty == EMPTY) {
+			lista[i] = IngresarUnProducto();
+			break;
+		}
 	}
 
 }
@@ -97,30 +157,25 @@ void MostrarProducto(eProducto unProducto) {
 			unProducto.precio);
 }
 
-eProducto IngresarUnProducto(){
-
+eProducto IngresarUnProducto() {
 	eProducto producto;
-
-	producto.idProducto = IngresarEntero("Ingrese el ID");
-	getString(producto.descripcion, "Ingrese la descripcion", 50);
+	producto.idProducto = IngresarEntero("Ingresa el id del producto");
+	IngresarCadena(producto.descripcion, "Ingresar la descripcion del producto", 100);
+	producto.nacionalidad = IngresarEntero("Ingresa la nacionalidad del producto, 1.EEUU, 2.China, 3.Otro: ");
+	producto.tipo =
+			IngresarEntero("Ingresa el tipo del producto, 1.Iphone, 2.Mac, 3.Ipad, 4.Accesorios: ");
+	producto.precio = IngresarFlotante("Ingresa el precio del producto");
+	producto.isEmpty = FULL;
 
 	return producto;
 }
 
-/*
- * qué les parece si para mañana se crean la función Buscar
-edito: BuscarLibre?
-Tú22:16
-me acabas de explotar el cerebro Cami
-Delgado Benitez Alexs Gabriel22:16
-ok perfecto
-Tú22:16
-edito: BuscarLibre? aaah con eso si
-Camila Iglesias Guerrero22:16
-jaja sí, se me escapo.
-Fabella Ivan22:17
-Validamos si el IsEmpty es falso..
-Camila Iglesias Guerrero22:17
-función BuscarLibre. Objetivo: informar la primer posición libre del array.
-https://onlinegdb.com/pEy2EDbtP
-*/
+void InicializarListaProducto(eProducto lista[], int tam) {
+
+	for (int i = 0; i < tam; i++) {
+
+		lista[i].isEmpty = EMPTY;
+
+	}
+}
+

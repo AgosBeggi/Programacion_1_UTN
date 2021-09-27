@@ -11,6 +11,7 @@
 float IngresarFlotante(char mensaje[])
 {
 	float numeroIngresado;
+
 	printf("%s", mensaje);
 	scanf("%f", &numeroIngresado);
 
@@ -20,23 +21,26 @@ float IngresarFlotante(char mensaje[])
 int IngresarEntero(char mensaje[])
 {
 	int numeroIngresado;
+
 	printf("%s", mensaje);
 	scanf("%d", &numeroIngresado);
 
 	return numeroIngresado;
 }
 
-int getString(char cadena[], char mensaje[], int tam)
+int IngresarCadena(char cadena[], char mensaje[], int tam)
 {
 	char auxiliarString[1000];
 	int retorno;
+
 	retorno = 0;
+
 	if (cadena != NULL && mensaje != NULL)
 	{
 		retorno = 1;
 		printf(mensaje);
 		fflush(stdin);
-		gets(auxiliarString);
+		gets(auxiliarString);//fgets
 		while (strlen(auxiliarString) > tam)
 		{
 			printf("Reingrese: ");
