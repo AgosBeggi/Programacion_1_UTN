@@ -15,6 +15,8 @@ Debemos lograr guardar en una tercer variable el apellido y el nombre con el sig
 Por ejemplo:
 Si el nombre es juan ignacio y el apellido es gOmEz, la salida debería ser:
 Gomez, Juan Ignacio
+
+Entregado con bibliotecas.
 */
 
 #include <stdio.h>
@@ -54,5 +56,5 @@ int main(void) {
 			printf("El nombre completo es: %s\n", apellidoYnombre);
 		}
 
-	return EXIT_SUCCESS; //aGostInA bEgGi
+	return EXIT_SUCCESS;
 }

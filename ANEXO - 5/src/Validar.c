@@ -4,6 +4,7 @@
  *  Created on: 16 sep. 2021
  *      Author: Beggi Agostina
  */
+#include <stdio.h>
 
 int ValidarEntero(int numEntero, int min, int max) {
 
